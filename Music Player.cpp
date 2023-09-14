@@ -9,63 +9,63 @@
 using namespace std;
 
 // Song class representing a single song
-class Song {
+class Song {                                                       
 public:
-    string title;
-    string artist;
+    string title;                            //title of the song
+    string artist;                            //artist of the song
 
-    Song(const string& _title, const string& _artist)
+    Song(const string& _title, const string& _artist)        //Song constructor taking title and artist as its parameters
         : title(_title), artist(_artist) {}
 };
 
 // Playlist class representing a collection of songs using linked list
 class Playlist {
 public:
-    string name;
-    list<Song*> songs;
+    string name;                        //name of the playlist
+    list<Song*> songs;                    //list of songs, STL List is used here which is a doubly linked list
 
-    Playlist(const string& _name) : name(_name) {}
+    Playlist(const string& _name) : name(_name) {}            //Playlist constructor
 
-    void addSong(Song* song) {
+    void addSong(Song* song) {                                //an object which adds a new song to the playlist 
         songs.push_back(song);
     }
 
-    void removeSong(Song* song) {
+    void removeSong(Song* song) {                            //an object which removes an existing song from the playlist
         songs.remove(song);
     }
 
-void shuffleSongs() {
-    std::vector<Song*> songsVector(songs.begin(), songs.end());
-    std::random_shuffle(songsVector.begin(), songsVector.end());
+void shuffleSongs() {                                              //this will shuffle the contents of the playlist                      
+    vector<Song*> songsVector(songs.begin(), songs.end());
+    random_shuffle(songsVector.begin(), songsVector.end());
     songs.assign(songsVector.begin(), songsVector.end());
 }
 
-    void sortSongsByTitle() {
-        songs.sort([](const Song* a, const Song* b) {
-            return a->title < b->title;
+    void sortSongsByTitle() {                                   //if the user wants to sort songs on the basis of title
+        songs.sort([](const Song* a, const Song* b) {           
+            return a->title < b->title;                            //lambda function, compares the songs and provides a lexicographically sorted list
         });
     }
 
-    void sortSongsByArtist() {
-        songs.sort([](const Song* a, const Song* b) {
-            return a->artist < b->artist;
-        });
+    void sortSongsByArtist() {                                //if the user wants to sort songs on the basis of artist's name
+        songs.sort([](const Song* a, const Song* b) {            //which in this case is given by a and b and the comparision criteria
+            return a->artist < b->artist;                    //STL sort can be given a comparator
+        });                                                    
     }
 };
 
 // MusicLibrary class representing the entire music collection
 class MusicLibrary {
 public:
-    unordered_map<string, Song*> songsMap;
-    unordered_map<string, Playlist*> playlistsMap;
-    list<Song*> favoritesList;
+    unordered_map<string, Song*> songsMap;                            // representing all songs in a hash map through stl container
+    unordered_map<string, Playlist*> playlistsMap;                    // representing all playlists in a hash map through stl container
+    list<Song*> favoritesList;                                    //collection of fav songs in a list
 
-    void addSong(const string& title, const string& artist) {
-        Song* song = new Song(title, artist);
-        songsMap[title] = song;
+    void addSong(const string& title, const string& artist) {        //adding a song in the songs map
+        Song* song = new Song(title, artist);                        //with the given title and artist name
+        songsMap[title] = song;                                      //title being the key to the song class
     }
 
-    void removeSong(const string & title) {
+    void removeSong(const string & title) {                    
         Song* song = songsMap[title];
         if (song) {
             for (auto& pair : playlistsMap) {
